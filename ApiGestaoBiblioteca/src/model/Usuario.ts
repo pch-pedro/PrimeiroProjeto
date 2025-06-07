@@ -1,19 +1,20 @@
-export type CategoriaUsuario = 'professor' | 'aluno' | 'bibliotecario';
+import { CategoriaUsuario } from "./CategoriaUsuario";
+import { Curso } from "./Curso";
 
 export type StatusUsuario = 'ativo' | 'inativo' | 'suspenso';
 
 export class Usuario{
+    id: number;
     nome: string;
     cpf: string;
-    email: string;
     categoria: CategoriaUsuario;
-    curso: string;
+    curso: Curso;
     status: StatusUsuario;
 
-    constructor(nome: string, cpf: string, email: string, categoria: CategoriaUsuario, curso: string, status: StatusUsuario){
+    constructor(id: number, nome: string, cpf: string, categoria: CategoriaUsuario, curso: Curso, status: StatusUsuario){
+        this.id = id;
         this.nome = nome;
         this.cpf = cpf;
-        this.email = email;
         this.categoria = categoria;
         this.curso = curso;
         this.status = status;
