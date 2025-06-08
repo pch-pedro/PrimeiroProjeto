@@ -42,7 +42,7 @@ export class LivroService{
         return this.repositorioLivro.listar();
     }
 
-    buscar(isbn: string): Livro{
+    buscarIsbn(isbn: string): Livro{
         try{
             const livro = this.repositorioLivro.buscarIsbn(isbn);
             return livro;
@@ -51,11 +51,21 @@ export class LivroService{
         }
     }
 
-    atualizar(isbn: string, dados: Partial<Omit<Livro, 'id'>>): void{
+    atualizar(isbn: string, dados: Partial<Omit<Livro, 'id'>>): boolean {
+        const livroExistente = this.repositorioLivro.buscarIsbn(isbn);
+        if (livroExistente === null) {
+            return false;
+        }
         this.repositorioLivro.atualizarIsbn(isbn, dados);
+        return true;
     }
 
-    remover(isbn: string): void{
+    remover(isbn: string): boolean {
+        const livroExistente = this.repositorioLivro.buscarIsbn(isbn);
+        if (livroExistente === null) {
+            return false;
+        }
         this.repositorioLivro.removerIsbn(isbn);
+        return true;
     }
 }
