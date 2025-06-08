@@ -5,6 +5,8 @@ import { UsuarioRepository } from "../repository/UsuarioRepository";
 export class UsuarioService{
     repositorio = new UsuarioRepository();
 
+    proximoId = 1;
+
     cpfValido(cpf: string): boolean{
         if(cpf.length !== 11){
             return false;
@@ -33,7 +35,7 @@ export class UsuarioService{
         return true;
     }
 
-    cadastrar(usuario: Usuario): {sucesso: boolean, mensagem: string}{
+    cadastrar(usuario: Usuario): {sucesso: boolean, mensagem: string, usuario?: Usuario}{
         const cpfValido = this.cpfValido(usuario.cpf);
 
         if(cpfValido == false){
@@ -51,10 +53,12 @@ export class UsuarioService{
             };
         }catch (error){
             try{
+                usuario.id = this.proximoId++;
                 this.repositorio.salvar(usuario);
                 return{
                     sucesso: true,
-                    mensagem: "Usuário cadastrado com sucesso"
+                    mensagem: "Usuário cadastrado com sucesso",
+                    usuario
                 };
             }catch (error){
                 return{

@@ -9,13 +9,13 @@ const usuarioService = new UsuarioService();
 export class UsuarioController {
     public cadastrar(req: Request, res: Response, next: NextFunction) {
         try {
-            const { id, nome, cpf, categoria, curso, status } = req.body;
+            const {nome, cpf, categoria, curso, status } = req.body;
             const categoriaObj = new CategoriaUsuario(categoria.id, categoria.nome);
             const cursoObj = new Curso(curso.id, curso.nome);
-            const usuario = new Usuario(id, nome, cpf, categoriaObj, cursoObj, status);
+            const usuario = new Usuario(0, nome, cpf, categoriaObj, cursoObj, 'ativo');
             const resultado = usuarioService.cadastrar(usuario);
             if (resultado.sucesso) {
-                return res.status(201).json(usuario);
+                return res.status(201).json(resultado.usuario);
             } else {
                 return res.status(400).json({ erro: resultado.mensagem });
             }
