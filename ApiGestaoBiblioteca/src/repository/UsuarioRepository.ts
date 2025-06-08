@@ -8,7 +8,13 @@ export class UsuarioRepository{
     }
 
     salvar(usuario: Usuario): void{
-        this.usuarios.push(usuario);
+        try{
+            const cpfRepetido = this.buscarCpf(usuario.cpf);
+            console.log("Já existe um usuário com este CPF. Verifique e tente novamente");
+        }catch (erro){
+            this.usuarios.push(usuario);
+            console.log("Usuário salvo com sucesso");
+        }
     }
 
     listar(): Usuario[]{
@@ -34,12 +40,11 @@ export class UsuarioRepository{
     }
 
     atualizarCpf(cpf: string, novosDados: Partial<Usuario>): boolean{
-        const usuario = this.buscarCpf(cpf);
-        if(usuario != null){
+        try{
+            const usuario = this.buscarCpf(cpf);
             Object.assign(usuario, novosDados);
             return true;
-        }
-        else{
+        }catch(error){
             return false;
         }
     }
