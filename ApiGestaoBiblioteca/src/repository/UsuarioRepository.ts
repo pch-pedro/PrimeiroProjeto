@@ -8,13 +8,7 @@ export class UsuarioRepository{
     }
 
     salvar(usuario: Usuario): void{
-        try{
-            const cpfRepetido = this.buscarCpf(usuario.cpf);
-            console.log("Já existe um usuário com este CPF. Verifique e tente novamente");
-        }catch (erro){
-            this.usuarios.push(usuario);
-            console.log("Usuário salvo com sucesso");
-        }
+        this.usuarios.push(usuario);
     }
 
     listar(): Usuario[]{
