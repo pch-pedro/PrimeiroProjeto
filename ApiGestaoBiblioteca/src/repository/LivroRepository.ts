@@ -35,6 +35,16 @@ export class LivroRepository{
         throw new Error(`Livro com o ISBN ${isbn} não encontrado. Verifique os dados e tente novamente`);
     }
 
+    buscarId(id: number): Livro {
+        for (let i: number = 0; i < this.livros.length; i++) {
+            const livro = this.livros[i];
+            if (livro.id === id) {
+                return livro;
+            }
+        }
+        throw new Error(`Livro com o ID ${id} não encontrado. Verifique os dados e tente novamente.`);
+    }   
+
     atualizarIsbn(isbn: string, dados: Partial<Omit<Livro, 'id'>>): void{
         const livro = this.buscarIsbn(isbn);
         Object.assign(livro, dados);
