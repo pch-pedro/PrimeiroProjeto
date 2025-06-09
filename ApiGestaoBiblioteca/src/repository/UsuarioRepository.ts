@@ -33,6 +33,15 @@ export class UsuarioRepository{
         throw new Error(`Usuário com o cpf ${cpf} não encontrado no sistema. Verifique e tente novamente.`);
     }
 
+    buscarId(id: number): Usuario {
+        for (let i: number = 0; i < this.usuarios.length; i++) {
+            if (this.usuarios[i].id === id) {
+                return this.usuarios[i];
+            }
+        }
+        throw new Error(`Usuário com ID ${id} não encontrado no sistema. Verifique e tente novamente.`);
+    }
+
     atualizarCpf(cpf: string, novosDados: Partial<Usuario>): boolean{
         try{
             const usuario = this.buscarCpf(cpf);

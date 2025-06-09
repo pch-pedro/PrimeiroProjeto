@@ -21,6 +21,28 @@ export class EstoqueRepository{
         return this.estoque;
     }
 
+    atualizar(id: number, novosDados: Partial<Omit<Estoque, 'id'>>): boolean {
+        for (let i = 0; i < this.estoque.length; i++) {
+            if (this.estoque[i].id === id) {
+                const estoqueAtual = this.estoque[i];
+                if (novosDados.livro_id !== undefined) {
+                    estoqueAtual.livro_id = novosDados.livro_id;
+                }
+                if (novosDados.quantidade !== undefined) {
+                    estoqueAtual.quantidade = novosDados.quantidade;
+                }
+                if (novosDados.quantidade_emprestada !== undefined) {
+                    estoqueAtual.quantidade_emprestada = novosDados.quantidade_emprestada;
+                }
+                if (novosDados.disponivel !== undefined) {
+                    estoqueAtual.disponivel = novosDados.disponivel;
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
     buscarCodigo(id: number): Estoque {
         for (let i: number = 0; i < this.estoque.length; i++) {
             if (this.estoque[i].id === id) {
@@ -28,6 +50,15 @@ export class EstoqueRepository{
             }
         }
         throw new Error(`Estoque com ID ${id} não encontrado.`);
+    }
+
+    buscarPorId(id: number): Estoque {
+        for (let i = 0; i < this.estoque.length; i++) {
+            if (this.estoque[i].id === id) {
+                return this.estoque[i];
+            }
+        }
+        throw new Error(`Estoque com ID ${id} não encontrado. Verifique e tente novamente.`);
     }
 
     atualizarCodigo(id: number, estoque: Partial<Omit<Estoque, 'id'>>): boolean{
