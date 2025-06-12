@@ -1,6 +1,6 @@
 import express from 'express';
 import usuarioRoutes from './routes/usuario.routes';
-import livroRoutes from './routes/usuario.routes';
+import livroRoutes from './routes/livro.routes';
 import estoqueRoutes   from './routes/estoque.routes';
 import emprestimoRoutes from './routes/emprestimo.routes';
 
