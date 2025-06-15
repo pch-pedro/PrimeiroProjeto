@@ -6,4 +6,4 @@ export class CategoriaUsuario{
         this.id = id;
         this.nome = nome;
     }
-}
+};
