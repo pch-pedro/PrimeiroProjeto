@@ -5,8 +5,6 @@ import { UsuarioRepository } from "../repository/UsuarioRepository";
 export class UsuarioService{
     repositorio = new UsuarioRepository();
 
-    proximoId = 1;
-
     cpfValido(cpf: string): boolean{
         if(cpf.length !== 11){
             return false;
@@ -53,7 +51,6 @@ export class UsuarioService{
             };
         }catch (error){
             try{
-                usuario.id = this.proximoId++;
                 this.repositorio.salvar(usuario);
                 return{
                     sucesso: true,

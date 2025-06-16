@@ -12,7 +12,7 @@ export class UsuarioController {
             const {nome, cpf, categoria, curso, status } = req.body;
             const categoriaObj = new CategoriaUsuario(categoria.nome);
             const cursoObj = new Curso(curso.nome);
-            const usuario = new Usuario(0, nome, cpf, categoriaObj, cursoObj, 'ativo');
+            const usuario = new Usuario(nome, cpf, categoriaObj, cursoObj, 'ativo');
             const resultado = usuarioService.cadastrar(usuario);
             if (resultado.sucesso) {
                 return res.status(201).json(resultado.usuario);

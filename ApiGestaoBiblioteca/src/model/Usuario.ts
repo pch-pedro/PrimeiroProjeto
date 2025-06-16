@@ -9,12 +9,16 @@ export class Usuario{
     cursoId: Curso;
     status: string;
 
-    constructor(id: number, nome: string, cpf: string, categoriaId: CategoriaUsuario, cursoId: Curso, status: string){
-        this.id = id
+    constructor(nome: string, cpf: string, categoriaId: CategoriaUsuario, cursoId: Curso, status: string){
+        this.id = this.criarId();
         this.nome = nome;
         this.cpf = cpf;
         this.categoriaId = categoriaId;
         this.cursoId = cursoId;
         this.status = status;
+    }
+
+    criarId(){
+        return Date.now();
     }
 }
