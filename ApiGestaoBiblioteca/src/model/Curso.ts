@@ -2,7 +2,7 @@ export class Curso{
     id: number;
     nome: string;
 
-    constructor(id: number, nome: string){
+    constructor(nome: string){
         nome = nome.toLowerCase();
         this.verificarCurso(nome);
         this.id = this.definirId(nome);

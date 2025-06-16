@@ -10,8 +10,8 @@ export class UsuarioController {
     public cadastrar(req: Request, res: Response, next: NextFunction) {
         try {
             const {nome, cpf, categoria, curso, status } = req.body;
-            const categoriaObj = new CategoriaUsuario(categoria.id, categoria.nome);
-            const cursoObj = new Curso(curso.id, curso.nome);
+            const categoriaObj = new CategoriaUsuario(categoria.nome);
+            const cursoObj = new Curso(curso.nome);
             const usuario = new Usuario(0, nome, cpf, categoriaObj, cursoObj, 'ativo');
             const resultado = usuarioService.cadastrar(usuario);
             if (resultado.sucesso) {
