@@ -24,8 +24,28 @@ export class Usuario{
 
     validarCpf(cpf: string): string{
         let tamanhoCpf: boolean = false;
+        let cpfRepetido: boolean = false;
         if(cpf.length === 11){
             tamanhoCpf = true;
+            cpfRepetido = this.validarSequencia(cpf);
         }
+    }
+
+    validarSequencia(cpf: string): boolean{
+        let repetido: boolean = false;
+        let vetorCpf: string [] = [];
+        for(let i: number = 0; i < cpf.length; i++){
+            vetorCpf[i] = cpf.substring(i, i +1);
+        }
+        let numerosRepetidos: number = 0;
+        for(let i: number = 0; i < cpf.length; i++){
+            if(vetorCpf[i] === cpf[0]){
+                numerosRepetidos++;
+            }
+        }
+        if(numerosRepetidos === 11){
+            repetido = true;
+        }
+        return repetido;
     }
 }
