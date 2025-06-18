@@ -31,12 +31,17 @@ export class Usuario{
         }
     }
 
-    validarSequencia(cpf: string): boolean{
-        let repetido: boolean = false;
+    transformarCpfVetor(cpf: string): string []{
         let vetorCpf: string [] = [];
         for(let i: number = 0; i < cpf.length; i++){
             vetorCpf[i] = cpf.substring(i, i +1);
         }
+        return vetorCpf;
+    }
+
+    validarSequencia(cpf: string): boolean{
+        let repetido: boolean = false;
+        let vetorCpf: string [] = this.transformarCpfVetor(cpf);
         let numerosRepetidos: number = 0;
         for(let i: number = 0; i < cpf.length; i++){
             if(vetorCpf[i] === cpf[0]){
