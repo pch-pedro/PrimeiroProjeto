@@ -64,25 +64,51 @@ export class Usuario{
         let vetorCpf: string [] = this.transformarCpfVetor(cpf);
         let peso: number = 10;
         let resto: number = 0;
+        let Digito: number = 0;
         for(let i: number = 0; i < 9; i++){
             soma += parseInt(vetorCpf[i]) * peso--;
         }
-        resto = soma%11;
+        resto = soma % 11;
         if(resto < 2){
-            soma = 0;
-            if(parseInt(vetorCpf[9]) === soma){
+            Digito = 0;
+            if(parseInt(vetorCpf[9]) === Digito){
                 primeiroDigitoVerificador = true;
             }
             return primeiroDigitoVerificador;
         }
         else{
-            soma = 11 - resto;
-            if(parseInt(vetorCpf[9]) === soma){
+            Digito = 11 - resto;
+            if(parseInt(vetorCpf[9]) === Digito){
                 primeiroDigitoVerificador = true;
             }
         }
         return primeiroDigitoVerificador;
     }
 
-    verificarSegundoDigito
+    verificarSegundoDigito(cpf: string): boolean{
+        let segundoDigitoVerificador: boolean = false;
+        let soma: number = 0;
+        let vetorCpf: string [] = this.transformarCpfVetor(cpf);
+        let peso: number = 11;
+        let resto: number = 0;
+        let Digito: number = 0;
+        for(let i: number = 0; i < 10; i++){
+            soma += parseInt(vetorCpf[i]) * peso--;
+        }
+        resto = soma % 11;
+        if(resto < 2){
+            Digito = 0;
+            if(parseInt(vetorCpf[10]) === Digito){
+                segundoDigitoVerificador = true;
+            }
+            return segundoDigitoVerificador;
+        }
+        else{
+            Digito = 11 - resto;
+            if(parseInt(vetorCpf[10]) === Digito){
+                segundoDigitoVerificador = true;
+            }
+            return segundoDigitoVerificador;
+        }
+    }
 }
