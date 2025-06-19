@@ -27,12 +27,26 @@ export class Usuario{
         let cpfRepetido: boolean = false;
         let primeiroDigitoVerificador: boolean = false;
         let segundoDigitoVerificador: boolean = false;
+        let cpfValido: boolean = false;
         if(cpf.length === 11){
             tamanhoCpf = true;
             cpfRepetido = this.validarSequencia(cpf);
             primeiroDigitoVerificador = this.verificarPrimeiroDigito(cpf);
             segundoDigitoVerificador = this.verificarSegundoDigito(cpf);
         }
+        if(tamanhoCpf === false){
+            throw new Error("O cpf informado não possui 11 digitos. Verifique e tente novamente");
+        }
+        if(cpfRepetido === true){
+            throw new Error("O cpf possui uma sequência de 11 números repetidos. Verifique e tente novamente");
+        }
+        if(primeiroDigitoVerificador === false){
+            throw new Error("O primeiro digito verificador, décimo digito, não é válido. Verifique e tente novamente");
+        }
+        if(segundoDigitoVerificador === false){
+            throw new Error("O segundo dígito verificador, o décimo primeiro dígito, não é válido. Verifique e tente novamente");
+        }
+        return cpf;
     }
 
     transformarCpfVetor(cpf: string): string []{
