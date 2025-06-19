@@ -34,7 +34,7 @@ export class Usuario{
             primeiroDigitoVerificador = this.verificarPrimeiroDigito(cpf);
             segundoDigitoVerificador = this.verificarSegundoDigito(cpf);
         }
-        if(tamanhoCpf === false){
+        else{
             throw new Error("O cpf informado não possui 11 digitos. Verifique e tente novamente");
         }
         if(cpfRepetido === true){
