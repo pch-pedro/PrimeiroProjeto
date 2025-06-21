@@ -20,8 +20,17 @@ export class UsuarioRepository{
         this.usuarios.push(usuario);
     }
 
-    listar(): Usuario[]{
-        return this.usuarios;
+    listar(nome?: string, categoria?: string, curso?:string, status?:string): Usuario[]{
+        let usuariosFiltrados: Usuario[] = []
+        if(nome){
+            for(let i: number = 0; i < this.usuarios.length; i++){
+                if(this.usuarios[i].nome.includes(nome)){
+                    usuariosFiltrados.push(this.usuarios[i]);
+                }
+            }
+        }
+        
+        return usuariosFiltrados;
     }
 
     compararCpf(usuario: Usuario, cpf: string): boolean{
