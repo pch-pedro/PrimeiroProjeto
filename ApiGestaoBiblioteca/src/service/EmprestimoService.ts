@@ -5,7 +5,7 @@ import { EstoqueRepository } from "../repository/EstoqueRepository";
 
 export class EmprestimoService{
     repositorioEmprestimo = new EmprestimoRepository();
-    repositorioUsuario = new UsuarioRepository();
+    repositorioUsuario = UsuarioRepository.getInstance();
     repositorioEstoque = new EstoqueRepository();
 
     listar(): Emprestimo[] {
