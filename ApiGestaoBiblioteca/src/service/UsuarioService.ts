@@ -3,7 +3,7 @@ import { CategoriaUsuario } from "../model/CategoriaUsuario";
 import { UsuarioRepository } from "../repository/UsuarioRepository";
 
 export class UsuarioService{
-    repositorio = new UsuarioRepository();
+    repositorio = UsuarioRepository.getInstance();
 
     cpfValido(cpf: string): boolean{
         if(cpf.length !== 11){

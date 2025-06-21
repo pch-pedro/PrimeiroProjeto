@@ -1,10 +1,19 @@
 import { Usuario } from "../model/Usuario";
 
 export class UsuarioRepository{
-    usuarios:Usuario[] = [];
+    private static instance: UsuarioRepository;
 
-    constructor(){
+    private usuarios:Usuario[] = [];
+
+    private constructor(){
         this.usuarios = [];
+    }
+
+    static getInstance(): UsuarioRepository{
+        if(!UsuarioRepository.instance){
+            UsuarioRepository.instance = new UsuarioRepository();
+        }
+        return UsuarioRepository.instance;
     }
 
     salvar(usuario: Usuario): void{
