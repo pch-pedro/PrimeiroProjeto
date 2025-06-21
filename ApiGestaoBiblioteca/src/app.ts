@@ -9,7 +9,7 @@ const app = express();
 const PORT = process.env.PORT ?? 3090;
 app.use(express.json());
 
-app.use('/library/usuarios',);
+app.use('/library/usuarios',usuarioRoutes);
 app.use('/library/livros', livroRoutes);
 app.use('/library/estoque', estoqueRoutes);
 app.use('/library/emprestimos', emprestimoRoutes);
