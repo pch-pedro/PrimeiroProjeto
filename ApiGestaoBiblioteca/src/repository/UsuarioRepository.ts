@@ -35,7 +35,7 @@ export class UsuarioRepository{
 
     buscarCpf(cpf: string): Usuario{
         for(let i: number = 0; i < this.usuarios.length; i++){
-            if(this.compararCpf(this.usuarios[i], cpf)){
+            if(this.usuarios[i].cpf === cpf){
                 return this.usuarios[i];
             }
         }
