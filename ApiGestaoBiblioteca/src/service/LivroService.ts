@@ -2,40 +2,31 @@ import { Livro } from "../model/Livro";
 import { LivroRepository } from "../repository/LivroRepository";
 
 export class LivroService{
-    repositorioLivro = new LivroRepository();
+    repositorioLivro = LivroRepository.getInstance();
 
-    cadastrar(livro: {
-        titulo: string, 
-        autor: string, 
-        editora: string, 
-        edicao: string, 
-        isbn: string, 
-        categoria_id: number
-    }): {sucesso: boolean; mensagem: string; livro?: Livro}{
-        const listaLivros = this.repositorioLivro.listar();
+    private static instance: LivroService;
 
-        let isbnExiste = false;
-        for (let i: number = 0; i < listaLivros.length; i++){
-            if(listaLivros[i].isbn === livro.isbn){
-                isbnExiste = true;
-                break;
-            }
+    static getInstance(): LivroService{
+        if(!LivroService.instance){
+            LivroService.instance = new LivroService();
         }
+        return LivroService.instance;
+    }
 
-        if(isbnExiste === true){
-            return{
+    cadastrar(livro: Livro): { sucesso: boolean, mensagem: string, livro?: Livro } {
+        try {
+            this.repositorioLivro.salvar(livro);
+            return {
+                sucesso: true,
+                mensagem: "Livro cadastrado com sucesso",
+                livro
+            };
+        } catch (error) {
+            return {
                 sucesso: false,
-                mensagem: "Já esxiste um livro com esse ISBN no sistema."
+                mensagem: (error as Error).message
             };
         }
-
-        const novoLivro = this.repositorioLivro.salvar(livro);
-
-        return{
-            sucesso: true,
-            mensagem: "Livro cadastrado com sucesso",
-            livro: novoLivro
-        };
     }
 
     listar(): Livro []{
@@ -44,20 +35,25 @@ export class LivroService{
 
     buscarIsbn(isbn: string): Livro{
         try{
-            const livro = this.repositorioLivro.buscarIsbn(isbn);
-            return livro;
-        }catch(error){
-            throw new Error (`Livro com o ISBN ${isbn} não encontrado`);
+            return this.repositorioLivro.buscarIsbn(isbn);
+        }catch(erro){
+            throw new Error((erro as Error).message);
         }
     }
 
-    atualizar(isbn: string, dados: Partial<Omit<Livro, 'id'>>): boolean {
-        const livroExistente = this.repositorioLivro.buscarIsbn(isbn);
-        if (livroExistente === null) {
-            return false;
+    atualizar(isbn: string, titulo?: string, autor?: string, editora?: string, categoria_id?: string): { sucesso: boolean, mensagem: string } {
+        try {
+            this.repositorioLivro.atualizarIsbn(isbn, titulo, autor, editora, categoria_id);
+            return {
+                sucesso: true,
+                mensagem: "Livro atualizado com sucesso"
+            };
+        } catch (error) {
+            return {
+                sucesso: false,
+                mensagem: (error as Error).message
+            };
         }
-        this.repositorioLivro.atualizarIsbn(isbn, dados);
-        return true;
     }
 
     remover(isbn: string): boolean {
