@@ -1,4 +1,6 @@
 import { Usuario } from "../model/Usuario";
+import { CategoriaUsuario } from "../model/CategoriaUsuario";
+import { Curso } from "../model/Curso";
 
 export class UsuarioRepository{
     private static instance: UsuarioRepository;
@@ -22,12 +24,52 @@ export class UsuarioRepository{
 
     listar(nome?: string, categoria?: string, curso?:string, status?:string): Usuario[]{
         let usuariosFiltrados: Usuario[] = []
+
+        for(let i: number = 0; i < this.usuarios.length; i++){
+            usuariosFiltrados.push(this.usuarios[i]);
+        }
+        
         if(nome){
-            for(let i: number = 0; i < this.usuarios.length; i++){
-                if(this.usuarios[i].nome.includes(nome)){
-                    usuariosFiltrados.push(this.usuarios[i]);
+            let nomeFiltrado: Usuario [] = [];
+            for(let i: number = 0; i < usuariosFiltrados.length; i++){
+                if(usuariosFiltrados[i].nome.toLowerCase().includes(nome.toLowerCase())){
+                    nomeFiltrado.push(usuariosFiltrados[i]);
                 }
             }
+            usuariosFiltrados = nomeFiltrado;
+        }
+        if(categoria){
+            let categoriaUsuario = new CategoriaUsuario(categoria);
+            let categoriaId1 = categoriaUsuario.id;
+            let categoriaFiltrada: Usuario [] = [];
+            for(let i: number = 0; i < usuariosFiltrados.length; i++){
+                if(usuariosFiltrados[i].categoriaId.id === categoriaId1){
+                    categoriaFiltrada.push(usuariosFiltrados[i]);
+                }
+            }
+            usuariosFiltrados = categoriaFiltrada;
+        }
+
+        if(curso){
+            let cursoUsuario = new Curso(curso);
+            let cursoId1 = cursoUsuario.id;
+            let cursoFiltrado: Usuario [] = [];
+            for(let i: number = 0; i < usuariosFiltrados.length; i++){
+                if(usuariosFiltrados[i].cursoId.id === cursoId1){
+                    cursoFiltrado.push(usuariosFiltrados[i]);
+                }
+            }
+            usuariosFiltrados = cursoFiltrado;
+        }
+
+        if(status){
+            let statusFiltrado: Usuario [] = [];
+            for(let i: number = 0; i < usuariosFiltrados.length; i++){
+                if(usuariosFiltrados[i].status === status.toLowerCase()){
+                    statusFiltrado.push(usuariosFiltrados[i]);
+                }
+            }
+            usuariosFiltrados = statusFiltrado;
         }
         
         return usuariosFiltrados;
