@@ -35,13 +35,9 @@ export class UsuarioController {
         try {
             const { cpf } = req.params;
             const usuario = usuarioService.buscarCpf(cpf);
-            if (usuario) {
-                return res.json(usuario);
-            } else {
-                return res.status(404).json({ erro: "Usuário não encontrado. Verifique os dados e tente novamente" });
-            }
+            return res.json(usuario);
         } catch (error) {
-            return res.status(500).json({ erro: "Erro no servidor" });
+            return res.status(404).json({erro: (error as Error).message});
         }
     }
 
