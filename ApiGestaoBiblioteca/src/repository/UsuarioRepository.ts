@@ -39,8 +39,8 @@ export class UsuarioRepository{
             usuariosFiltrados = nomeFiltrado;
         }
         if(categoria){
-            let categoriaUsuario = new CategoriaUsuario(categoria);
-            let categoriaId1 = categoriaUsuario.id;
+            let categoriaUsuario: CategoriaUsuario = new CategoriaUsuario(categoria);
+            let categoriaId1: number = categoriaUsuario.id;
             let categoriaFiltrada: Usuario [] = [];
             for(let i: number = 0; i < usuariosFiltrados.length; i++){
                 if(usuariosFiltrados[i].categoriaId.id === categoriaId1){
@@ -51,8 +51,8 @@ export class UsuarioRepository{
         }
 
         if(curso){
-            let cursoUsuario = new Curso(curso);
-            let cursoId1 = cursoUsuario.id;
+            let cursoUsuario: Curso = new Curso(curso);
+            let cursoId1: number = cursoUsuario.id;
             let cursoFiltrado: Usuario [] = [];
             for(let i: number = 0; i < usuariosFiltrados.length; i++){
                 if(usuariosFiltrados[i].cursoId.id === cursoId1){
@@ -102,10 +102,36 @@ export class UsuarioRepository{
         throw new Error(`Usuário com ID ${id} não encontrado no sistema. Verifique e tente novamente.`);
     }
 
-    atualizarCpf(cpf: string, novosDados: Partial<Usuario>): boolean{
+    atualizarCpf(cpf: string, nome?: string, categoria?: string, curso?: string): boolean{
+        let indexUsuario: number = -1;
         try{
-            const usuario = this.buscarCpf(cpf);
-            Object.assign(usuario, novosDados);
+            for(let i: number = 0; i < this.usuarios.length; i++){
+                if(this.usuarios[i].cpf === cpf){
+                    indexUsuario = i;
+                }
+            }
+
+            if(indexUsuario === -1){
+                throw new Error(`Usuário com o cpf '${cpf}' não encontrado. Verifique e tente novamente.`);
+            }
+
+            if(nome === undefined && categoria === undefined && curso === undefined){
+                throw new Error("Nenhum parametro de atualização foi passado. Verifique e tente novamente.");
+            }
+
+            if(nome){
+                this.usuarios[indexUsuario].nome = nome;
+            }
+            if(categoria){
+                let categoriaUsuario: CategoriaUsuario = new CategoriaUsuario(categoria);
+                let categoriaId1: number = categoriaUsuario.id;
+                this.usuarios[indexUsuario].categoriaId.id = categoriaId1;
+            }
+            if(curso){
+                let cursoUsuario: Curso = new Curso(curso);
+                let cursoId1: number = cursoUsuario.id;
+                this.usuarios[indexUsuario].cursoId.id = cursoId1;
+            }
             return true;
         }catch(error){
             return false;
