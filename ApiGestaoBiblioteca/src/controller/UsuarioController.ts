@@ -18,7 +18,7 @@ export class UsuarioController {
                 return res.status(400).json({ erro: resultado.mensagem });
             }
         } catch (error) {
-            return res.status(500).json({ erro: "Erro no servidor" });
+            return res.status(400).json({ erro: (error as Error).message });
         }
     }
 
@@ -46,9 +46,12 @@ export class UsuarioController {
             const { cpf } = req.params;
             const { nome, categoria, curso } = req.body;
         
-            usuarioService.atualizar(cpf, nome, categoria, curso);
+            let resultado = usuarioService.atualizar(cpf, nome, categoria, curso);
         
-            return res.json({ mensagem: "Usuário atualizado com sucesso" });
+            if (!resultado.sucesso) {
+                return res.status(400).json({ erro: resultado.mensagem });
+            }
+            return res.json({ mensagem: resultado.mensagem });
         } catch (error) {
             return res.status(400).json({ erro: (error as Error).message });
         }
