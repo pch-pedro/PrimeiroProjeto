@@ -12,7 +12,7 @@ export class Usuario{
     constructor(nome: string, cpf: string, categoriaId: CategoriaUsuario, cursoId: Curso, status: string){
         this.id = this.criarId();
         this.nome = nome;
-        this.cpf = cpf;
+        this.cpf = this.validarCpf(cpf);
         this.categoriaId = categoriaId;
         this.cursoId = cursoId;
         this.status = status;

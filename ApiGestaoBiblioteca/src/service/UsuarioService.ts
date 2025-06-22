@@ -5,64 +5,19 @@ import { UsuarioRepository } from "../repository/UsuarioRepository";
 export class UsuarioService{
     repositorio = UsuarioRepository.getInstance();
 
-    cpfValido(cpf: string): boolean{
-        if(cpf.length !== 11){
-            return false;
-        }
-
-        for(let i: number = 0; i < cpf.length; i++){
-            const caractere = cpf[i];
-            if(caractere < '0' || caractere > '9'){
-                return false;
-            }
-        }
-
-        const primeiroDigito = cpf[0];
-        let todosIguais = true;
-        for(let i: number = 1; i < cpf.length; i++){
-            if(cpf[i] !== primeiroDigito){
-                todosIguais = false;
-                break;
-            }
-        }
-
-        if(todosIguais == true){
-            return false;
-        }
-
-        return true;
-    }
-
     cadastrar(usuario: Usuario): {sucesso: boolean, mensagem: string, usuario?: Usuario}{
-        const cpfValido = this.cpfValido(usuario.cpf);
-
-        if(cpfValido == false){
-            return{
-                sucesso: false,
-                mensagem: "O CPF informado é inválido. Verifique, e tente novamente"
-            };
-        }
-
         try{
-            this.repositorio.buscarCpf(usuario.cpf);
+            this.repositorio.salvar(usuario);
             return{
-                sucesso: false,
-                mensagem: "CPF já cadastrado"
+                sucesso: true,
+                mensagem: "Usuário cadastrado com sucesso",
+                usuario
             };
         }catch (error){
-            try{
-                this.repositorio.salvar(usuario);
-                return{
-                    sucesso: true,
-                    mensagem: "Usuário cadastrado com sucesso",
-                    usuario
-                };
-            }catch (error){
-                return{
-                    sucesso: false,
-                    mensagem: "Erro ao cadastrar usuário. Verifique os dados e tente novamente"
-                };
-            }
+            return{
+                sucesso: false,
+                mensagem: (error as Error).message
+            };
         }
     }
 
@@ -74,8 +29,8 @@ export class UsuarioService{
         return this.repositorio.buscarCpf(cpf);
     }
 
-    atualizar(cpf: string, dados: Partial<Usuario>): boolean{
-        return this.repositorio.atualizarCpf(cpf, dados);
+    atualizar(cpf: string, nome?: string, categoria?: string, curso?: string): boolean{
+        return this.repositorio.atualizarCpf(cpf, nome, categoria, curso);
     }
 
     remover(cpf: string): boolean{

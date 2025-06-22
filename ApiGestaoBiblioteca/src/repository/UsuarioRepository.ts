@@ -19,7 +19,12 @@ export class UsuarioRepository{
     }
 
     salvar(usuario: Usuario): void{
-        this.usuarios.push(usuario);
+        if(this.compararCpf(usuario) === false){
+            this.usuarios.push(usuario);
+        }
+        else{
+            throw new Error(`Usuário com o cpf '${usuario.cpf} já está cadastrado no sistema. Verifique e tente novamente'`)
+        }
     }
 
     listar(nome?: string, categoria?: string, curso?:string, status?:string): Usuario[]{
@@ -75,13 +80,13 @@ export class UsuarioRepository{
         return usuariosFiltrados;
     }
 
-    compararCpf(usuario: Usuario, cpf: string): boolean{
-        if(usuario.cpf === cpf){
-            return true;
+    compararCpf(usuario: Usuario): boolean{
+        for(let i: number = 0; i < this.usuarios.length; i++){
+            if(usuario.cpf === this.usuarios[i].cpf){
+                return true;
+            }
         }
-        else{
-            return false;
-        }
+        return false;
     }
 
     buscarCpf(cpf: string): Usuario{
