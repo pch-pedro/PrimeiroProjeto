@@ -1,7 +1,7 @@
 export class CategoriaUsuario{
     id: number;
     nome: string;
-
+    
     constructor(nome: string){
         nome = nome.toLowerCase();
         this.verificarCategoria(nome);

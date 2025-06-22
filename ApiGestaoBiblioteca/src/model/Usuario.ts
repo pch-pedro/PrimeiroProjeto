@@ -9,12 +9,14 @@ export class Usuario{
     cursoId: Curso;
     status: string;
 
-    constructor(nome: string, cpf: string, categoriaId: CategoriaUsuario, cursoId: Curso, status: string){
+    constructor(nome: string, cpf: string, categoriaUsuario: string, cursoUsuario: string, status: string){
+        let categoriaUsuario1: CategoriaUsuario = new CategoriaUsuario(categoriaUsuario);
+        let cursoId1: Curso = new Curso(cursoUsuario);
         this.id = this.criarId();
         this.nome = nome;
         this.cpf = this.validarCpf(cpf);
-        this.categoriaId = categoriaId;
-        this.cursoId = cursoId;
+        this.categoriaId =  categoriaUsuario1;
+        this.cursoId = cursoId1;
         this.status = status;
     }
 

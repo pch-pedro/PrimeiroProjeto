@@ -5,6 +5,15 @@ import { UsuarioRepository } from "../repository/UsuarioRepository";
 export class UsuarioService{
     repositorio = UsuarioRepository.getInstance();
 
+    private static instance: UsuarioService;
+
+    static getInstance(): UsuarioService{
+        if(!UsuarioService.instance){
+            UsuarioService.instance = new UsuarioService();
+        }
+        return UsuarioService.instance;
+    }
+
     cadastrar(usuario: Usuario): {sucesso: boolean, mensagem: string, usuario?: Usuario}{
         try{
             this.repositorio.salvar(usuario);

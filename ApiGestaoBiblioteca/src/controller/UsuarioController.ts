@@ -1,18 +1,16 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { Usuario } from "../model/Usuario";
 import { UsuarioService } from "../service/UsuarioService";
 import { CategoriaUsuario } from "../model/CategoriaUsuario";
 import { Curso } from "../model/Curso";
 
-const usuarioService = new UsuarioService();
+const usuarioService = UsuarioService.getInstance();
 
 export class UsuarioController {
-    public cadastrar(req: Request, res: Response, next: NextFunction) {
+    public cadastrar(req: Request, res: Response) {
         try {
-            const {nome, cpf, categoria, curso, status } = req.body;
-            const categoriaObj = new CategoriaUsuario(categoria.nome);
-            const cursoObj = new Curso(curso.nome);
-            const usuario = new Usuario(nome, cpf, categoriaObj, cursoObj, 'ativo');
+            const {nome, cpf, categoria, curso} = req.body;
+            const usuario = new Usuario(nome, cpf, categoria, curso, 'ativo');
             const resultado = usuarioService.cadastrar(usuario);
             if (resultado.sucesso) {
                 return res.status(201).json(resultado.usuario);
@@ -24,16 +22,16 @@ export class UsuarioController {
         }
     }
 
-    public listar(req: Request, res: Response, next: NextFunction) {
+    public listar(req: Request, res: Response) {
         try {
-            const usuarios = usuarioService.listar(); // Chama o método listar
+            const usuarios = usuarioService.listar();
             return res.json(usuarios);
         } catch (error) {
             return res.status(500).json({ erro: "Erro no servidor" });
         }
     }
 
-    public buscarPorCpf(req: Request, res: Response, next: NextFunction) {
+    public buscarPorCpf(req: Request, res: Response) {
         try {
             const { cpf } = req.params;
             const usuario = usuarioService.buscarCpf(cpf);
@@ -47,7 +45,7 @@ export class UsuarioController {
         }
     }
 
-    public atualizar(req: Request, res: Response, next: NextFunction) {
+    public atualizar(req: Request, res: Response) {
         try {
             const { cpf } = req.params;
             const sucesso = usuarioService.atualizar(cpf, req.body);
