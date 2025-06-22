@@ -38,8 +38,19 @@ export class UsuarioService{
         return this.repositorio.buscarCpf(cpf);
     }
 
-    atualizar(cpf: string, nome?: string, categoria?: string, curso?: string): boolean{
-        return this.repositorio.atualizarCpf(cpf, nome, categoria, curso);
+    atualizar(cpf: string, nome?: string, categoria?: string, curso?: string): { sucesso: boolean, mensagem: string } {
+        try {
+            this.repositorio.atualizarCpf(cpf, nome, categoria, curso);
+            return {
+                sucesso: true,
+                mensagem: "Usuário atualizado"
+            };
+        } catch (error) {
+            return {
+                sucesso: false,
+                mensagem: (error as Error).message
+            };
+        }
     }
 
     remover(cpf: string): boolean{

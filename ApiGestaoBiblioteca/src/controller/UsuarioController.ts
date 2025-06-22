@@ -44,14 +44,13 @@ export class UsuarioController {
     public atualizar(req: Request, res: Response) {
         try {
             const { cpf } = req.params;
-            const sucesso = usuarioService.atualizar(cpf, req.body);
-            if (!sucesso) {
-                return res.status(404).json({ erro: "Usuário não encontrado" });
-            } else {
-                return res.json({ mensagem: "Usuário atualizado" });
-            }
+            const { nome, categoria, curso } = req.body;
+        
+            usuarioService.atualizar(cpf, nome, categoria, curso);
+        
+            return res.json({ mensagem: "Usuário atualizado com sucesso" });
         } catch (error) {
-            return res.status(500).json({ erro: "Erro no servidor" });
+            return res.status(400).json({ erro: (error as Error).message });
         }
     }
 
