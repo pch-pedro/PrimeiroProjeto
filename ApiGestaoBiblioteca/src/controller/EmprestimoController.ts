@@ -6,7 +6,7 @@ import { EmprestimoService } from "../service/EmprestimoService";
 const servicoEmprestimo = new EmprestimoService();
 
 export class EmprestimoController {
-    public cadastrar(req: Request, res: Response, next: NextFunction): void {
+    public cadastrar(req: Request, res: Response): void {
         try {
             const { usuario_id, estoque_id } = req.body;
             if (usuario_id == null || estoque_id == null) {
@@ -29,7 +29,7 @@ export class EmprestimoController {
         }
     }
 
-    public listar(req: Request, res: Response, next: NextFunction): void {
+    public listar(req: Request, res: Response): void {
         try {
             const listaEmprestimos = servicoEmprestimo.listar();
             res.json(listaEmprestimos);
@@ -39,7 +39,7 @@ export class EmprestimoController {
         }
     }
 
-    public devolver(req: Request, res: Response, next: NextFunction): void {
+    public devolver(req: Request, res: Response): void {
         try {
             const id = Number(req.params.id);
             const resultado = servicoEmprestimo.devolverId(id);

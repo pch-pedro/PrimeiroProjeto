@@ -4,16 +4,16 @@ import { EmprestimoController } from "../controller/EmprestimoController";
 const controleEmprestimo = new EmprestimoController();
 const router = Router();
 
-router.post("/emprestimos", (req, res, next) => {
-    controleEmprestimo.cadastrar(req, res, next);
+router.post("/emprestimos", (req, res) => {
+    controleEmprestimo.cadastrar(req, res);
 });
 
-router.get("/emprestimos", (req, res, next) => {
-    controleEmprestimo.listar(req, res, next);
+router.get("/emprestimos", (req, res) => {
+    controleEmprestimo.listar(req, res);
 });
 
-router.put("/emprestimos/:id/devolucao", (req, res, next) => {
-    controleEmprestimo.devolver(req, res, next);
+router.put("/emprestimos/:id/devolucao", (req, res) => {
+    controleEmprestimo.devolver(req, res);
 });
 
 export default router;

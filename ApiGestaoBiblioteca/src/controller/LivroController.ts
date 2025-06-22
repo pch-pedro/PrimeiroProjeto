@@ -1,12 +1,11 @@
 import { Request } from "express";
 import { Response } from "express";
-import { NextFunction } from "express";
 import { LivroService } from "../service/LivroService";
 
 const livroService = new LivroService();
 
 export class LivroController{
-    public cadastrar(req: Request, res: Response, next: NextFunction){
+    public cadastrar(req: Request, res: Response){
         try{
             const {titulo, autor, editora, edicao, isbn, categoria_id} = req.body;
 
@@ -30,7 +29,7 @@ export class LivroController{
         }
     }
 
-    public listar(req: Request, res: Response, next: NextFunction) {
+    public listar(req: Request, res: Response) {
         try {
             const livros = livroService.listar();
             return res.json(livros);
@@ -39,7 +38,7 @@ export class LivroController{
         }
     }
 
-    public buscar(req: Request, res: Response, next: NextFunction) {
+    public buscar(req: Request, res: Response) {
         try {
             const { isbn } = req.params;
             const livro = livroService.buscarIsbn(isbn);
@@ -53,7 +52,7 @@ export class LivroController{
         }
     }
 
-    public atualizar(req: Request, res: Response, next: NextFunction) {
+    public atualizar(req: Request, res: Response) {
         try {
             const { isbn } = req.params;
             const sucesso = livroService.atualizar(isbn, req.body);
@@ -67,7 +66,7 @@ export class LivroController{
         }
     }
 
-    public remover(req: Request, res: Response, next: NextFunction) {
+    public remover(req: Request, res: Response) {
         try {
             const { isbn } = req.params;
             const sucesso = livroService.remover(isbn);

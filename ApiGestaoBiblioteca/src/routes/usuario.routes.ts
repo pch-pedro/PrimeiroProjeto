@@ -1,26 +1,26 @@
-import { Router, Request, Response, NextFunction } from 'express';
+import { Router, Request, Response} from 'express';
 import { UsuarioController } from '../controller/UsuarioController';
 
 const router = Router();
 const usuarioController = new UsuarioController();
 
-router.post('/', (req: Request, res: Response, next: NextFunction) => {
-  usuarioController.cadastrar(req, res, next);
+router.post('/', (req: Request, res: Response) => {
+  usuarioController.cadastrar(req, res);
 });
 
-router.get('/', (req: Request, res: Response, next: NextFunction) => {
-  usuarioController.listar(req, res, next); 
+router.get('/', (req: Request, res: Response) => {
+  usuarioController.listar(req, res); 
 });
 
-router.get('/:cpf', (req: Request, res: Response, next: NextFunction) => {
-  usuarioController.buscarPorCpf(req, res, next);
+router.get('/:cpf', (req: Request, res: Response) => {
+  usuarioController.buscarPorCpf(req, res);
 });
 
-router.put('/:cpf', (req: Request, res: Response, next: NextFunction) => {
-  usuarioController.atualizar(req, res, next);
+router.put('/:cpf', (req: Request, res: Response) => {
+  usuarioController.atualizar(req, res);
 });
 
-router.delete('/:cpf', (req: Request, res: Response, next: NextFunction) => {
+router.delete('/:cpf', (req: Request, res: Response) => {
   usuarioController.remover(req, res);
 });
 

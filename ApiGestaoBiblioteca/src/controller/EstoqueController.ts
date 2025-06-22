@@ -6,7 +6,7 @@ import { EstoqueService } from "../service/EstoqueService";
 const servicoEstoque = new EstoqueService;
 
 export class EstoqueController{
-    public cadastrar(req: Request, res: Response, next: NextFunction) {
+    public cadastrar(req: Request, res: Response) {
     try {
         const { livro_id, quantidade } = req.body;
         const resultado = servicoEstoque.cadastrarEstoque({
@@ -25,7 +25,7 @@ export class EstoqueController{
     }
 }
 
-    public listar(req: Request, res: Response, next: NextFunction) {
+    public listar(req: Request, res: Response) {
         try {
             const estoques = servicoEstoque.listar();
             return res.json(estoques);
@@ -34,7 +34,7 @@ export class EstoqueController{
         }
     }
 
-    public buscar(req: Request, res: Response, next: NextFunction) {
+    public buscar(req: Request, res: Response) {
         try {
             const { id } = req.params;
             const estoque = servicoEstoque.buscarCodigo(Number(id));
@@ -44,7 +44,7 @@ export class EstoqueController{
         }
     }
 
-    public atualizar(req: Request, res: Response, next: NextFunction) {
+    public atualizar(req: Request, res: Response) {
         try {
             const { id } = req.params;
             const sucesso = servicoEstoque.atualizarCodigo(Number(id), req.body);
@@ -58,7 +58,7 @@ export class EstoqueController{
         }
     }
 
-    public remover(req: Request, res: Response, next: NextFunction) {
+    public remover(req: Request, res: Response) {
         try {
             const { id } = req.params;
             const sucesso = servicoEstoque.removerCodigo(Number(id));
