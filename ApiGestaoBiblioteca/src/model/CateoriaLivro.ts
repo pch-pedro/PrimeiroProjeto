@@ -26,7 +26,7 @@ export class CategoriaLivro{
 
     verificarCategoria(nome: string): void{
         if(nome !== 'romance' && nome !== 'computação' && nome !== 'letras' && nome !== 'gestão'){
-            throw new Error(`Categoria de Usuário '${nome}' não é permitida. Certifique que a categoria do usuário seja uma dessas opções: 'romance' 'computação' 'letras' e 'gestão' todos com a acentuação correta`);
+            throw new Error(`Categoria de Livro '${nome}' não é permitida. Certifique que a categoria do usuário seja uma dessas opções: 'romance' 'computação' 'letras' e 'gestão' todos com a acentuação correta`);
         }
     }
 };
