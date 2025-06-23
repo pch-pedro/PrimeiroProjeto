@@ -1,31 +1,24 @@
 import { Request } from "express";
 import { Response } from "express";
 import { LivroService } from "../service/LivroService";
+import { Livro } from "../model/Livro";
 
-const livroService = new LivroService();
+const livroService = LivroService.getInstance();
 
 export class LivroController{
-    public cadastrar(req: Request, res: Response){
-        try{
-            const {titulo, autor, editora, edicao, isbn, categoria_id} = req.body;
+    public cadastrar(req: Request, res: Response) {
+        try {
+            const { titulo, autor, editora, edicao, isbn, categoria_id } = req.body;
+            const livro = new Livro(titulo, autor, editora, edicao, isbn, categoria_id);
+            const resultado = livroService.cadastrar(livro);
 
-            const resultado = livroService.cadastrar({
-                titulo,
-                autor,
-                editora,
-                edicao,
-                isbn,
-                categoria_id
-            });
-
-            if(resultado.sucesso){
+            if (resultado.sucesso) {
                 return res.status(201).json(resultado.livro);
+            } else {
+                return res.status(400).json({ erro: resultado.mensagem });
             }
-            else{
-                return res.status(400).json({erro: resultado.mensagem});
-            }
-        }catch (error){
-            return res.status(500).json({erro: "Erro no servidor"});
+        } catch (error) {
+            return res.status(400).json({ erro: (error as Error).message });
         }
     }
 
@@ -38,31 +31,30 @@ export class LivroController{
         }
     }
 
-    public buscar(req: Request, res: Response) {
+    public buscarPorIsbn(req: Request, res: Response) {
         try {
             const { isbn } = req.params;
             const livro = livroService.buscarIsbn(isbn);
-            if (livro) {
-                return res.json(livro);
-            } else {
-                return res.status(404).json({ erro: "Livro não encontrado" });
-            }
+            return res.json(livro);
         } catch (error) {
-            return res.status(500).json({ erro: "Erro no servidor" });
+            return res.status(404).json({ erro: (error as Error).message });
         }
     }
 
     public atualizar(req: Request, res: Response) {
         try {
             const { isbn } = req.params;
-            const sucesso = livroService.atualizar(isbn, req.body);
-            if (sucesso) {
-                return res.json({ mensagem: "Livro atualizado com sucesso" });
-            } else {
-                return res.status(404).json({ erro: "Livro não encontrado" });
-            }
+            const { titulo, autor, editora, categoria_id } = req.body;
+
+            const resultado = livroService.atualizar(isbn, titulo, autor, editora, categoria_id);
+
+            if (!resultado.sucesso) {
+                return res.status(400).json({ erro: resultado.mensagem });
+            } 
+
+            return res.json({ mensagem: resultado.mensagem });
         } catch (error) {
-            return res.status(500).json({ erro: "Erro no servidor" });
+            return res.status(400).json({ erro: (error as Error).message });
         }
     }
 
