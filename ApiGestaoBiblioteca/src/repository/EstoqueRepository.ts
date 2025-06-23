@@ -4,16 +4,10 @@ export class EstoqueRepository{
     estoque: Estoque [] = [];
     proximoId = 1;
 
-    salvar(estoqueObj: Omit <Estoque, 'id'>): Estoque{
-        const novoEstoque: Estoque = {
-            id: this.proximoId,
-            livro_id: estoqueObj.livro_id,
-            quantidade: estoqueObj.quantidade,
-            quantidade_emprestada: estoqueObj.quantidade_emprestada,
-            disponivel: estoqueObj.disponivel
-        };
-        this.proximoId++;
+    salvar(livro_id: string): Estoque {
+        const novoEstoque = new Estoque(this.proximoId, livro_id);
         this.estoque.push(novoEstoque);
+        this.proximoId++;
         return novoEstoque;
     }
 
