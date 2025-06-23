@@ -3,7 +3,7 @@ import { Response } from "express";
 import { EstoqueService } from "../service/EstoqueService";
 import { Estoque } from "../model/Estoque";
 
-const servicoEstoque = new EstoqueService;
+const servicoEstoque = EstoqueService.getInstance();
 
 export class EstoqueController{
     public cadastrar(req: Request, res: Response) {
@@ -33,25 +33,26 @@ export class EstoqueController{
 
     public buscar(req: Request, res: Response) {
         try {
-            const { id } = req.params;
-            const estoque = servicoEstoque.buscarCodigo(Number(id));
+            const { livro_id } = req.params;
+            const estoque = servicoEstoque.buscarCodigo(livro_id);
             return res.json(estoque);
         } catch (error) {
-            return res.status(404).json({ erro: "Estoque não encontrado" });
+            return res.status(404).json({ erro: (error as Error).message });
         }
     }
 
     public atualizar(req: Request, res: Response) {
         try {
-            const { id } = req.params;
-            const sucesso = servicoEstoque.atualizarCodigo(Number(id), req.body);
+            const { livro_id } = req.params;
+            const { disponibilidade } = req.body;
+            const sucesso = servicoEstoque.atualizarDisponibilidade(livro_id, disponibilidade);
             if (sucesso) {
-                return res.json({ mensagem: "Estoque atualizado com sucesso" });
+                return res.json({ mensagem: "Exemplar atualizado com sucesso" });
             } else {
-                return res.status(404).json({ erro: "Estoque não encontrado" });
+                return res.status(404).json({ erro: "Exemplar não encontrado" });
             }
         } catch (error) {
-            return res.status(500).json({ erro: "Erro no servidor" });
+            return res.status(500).json({ erro: (error as Error).message });
         }
     }
 
@@ -62,10 +63,10 @@ export class EstoqueController{
             if (sucesso) {
                 return res.status(204).send();
             } else {
-                return res.status(404).json({ erro: "Estoque não encontrado" });
+                return res.status(404).json({ erro: "Exemplar não encontrado" });
             }
         } catch (error) {
-            return res.status(500).json({ erro: "Erro no servidor" });
+            return res.status(500).json({ erro: (error as Error).message });
         }
     }
 }
