@@ -3,7 +3,7 @@ import { EstoqueRepository } from "../repository/EstoqueRepository";
 import { LivroRepository } from "../repository/LivroRepository";
 
 export class EstoqueService{
-    repositorioEstoque = new EstoqueRepository();
+    repositorioEstoque = EstoqueRepository.getInstance();
     repositorioLivro = LivroRepository.getInstance();
 
     cadastrarEstoque(id: number, livro_id: string): { sucesso: boolean, mensagem: string, estoque?: Estoque } {
@@ -11,7 +11,7 @@ export class EstoqueService{
             const estoque = this.repositorioEstoque.salvar(livro_id);
             return {
                 sucesso: true,
-                mensagem: "Estoque cadastrado com sucesso",
+                mensagem: "Exemplar cadastrado com sucesso",
                 estoque
             };
         } catch (error) {
@@ -26,12 +26,12 @@ export class EstoqueService{
         return this.repositorioEstoque.listar();
     }
 
-    buscarCodigo(id: number): Estoque{
-        return this.repositorioEstoque.buscarCodigo(id);
+    buscarCodigo(livro_id: string): Estoque{
+        return this.repositorioEstoque.buscarCodigo(livro_id);
     }
 
-    atualizarCodigo(id: number, dados: Partial<Omit<Estoque, 'id'>>): boolean {
-        return this.repositorioEstoque.atualizarCodigo(id, dados);
+    atualizarCodigo(livro_id: string): boolean {
+        return this.repositorioEstoque.atualizarCodigo(livro_id);
     }
 
     removerCodigo(id: number): boolean {
