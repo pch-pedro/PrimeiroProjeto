@@ -16,7 +16,6 @@ export class EmprestimoController {
             const resultado = servicoEmprestimo.cadastrar({ 
                 usuario_id: Number(usuario_id), 
                 estoque_id: Number(estoque_id),
-                data_emprestimo: new Date()
             });
             if (resultado.sucesso) {
                 res.status(201).json(resultado.emprestimo);
