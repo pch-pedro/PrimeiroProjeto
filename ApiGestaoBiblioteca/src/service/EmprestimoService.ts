@@ -12,13 +12,13 @@ export class EmprestimoService{
         return this.repositorioEmprestimo.listar();
     }
 
-    cadastrar(emprestimo: Emprestimo): { sucesso: boolean; mensagem: string; emprestimo?: Emprestimo } {
-        const usuario = this.repositorioUsuario.buscarId(emprestimo.usuario_id);
+    cadastrar(dados: { usuario_id: number, estoque_id: number }): { sucesso: boolean; mensagem: string; emprestimo?: Emprestimo } {
+        const usuario = this.repositorioUsuario.buscarId(dados.usuario_id);
         if (!usuario || usuario.status !== 'ativo') {
             return { sucesso: false, mensagem: 'Usuário inválido ou inativo' };
         }
 
-        const estoque = this.repositorioEstoque.buscarPorId(emprestimo.estoque_id);
+        const estoque = this.repositorioEstoque.buscarPorId(dados.estoque_id);
             if (!estoque || estoque.disponivel === false) {
             return { sucesso: false, mensagem: 'Exemplar indisponível' };
         }
@@ -28,8 +28,8 @@ export class EmprestimoService{
 
         const novoEmprestimo: Emprestimo = {
             id: 0,
-            usuario_id: emprestimo.usuario_id,
-            estoque_id: emprestimo.estoque_id,
+            usuario_id: dados.usuario_id,
+            estoque_id: dados.estoque_id,
             data_emprestimo: new Date(),
             data_devolucao: null,
             data_entrega: null,
