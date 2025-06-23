@@ -1,7 +1,21 @@
 import { Estoque } from "../model/Estoque";
 
 export class EstoqueRepository{
-    estoque: Estoque [] = [];
+    private static instance: EstoqueRepository;
+
+    private estoque:Estoque[] = [];
+
+    private constructor(){
+        this.estoque = [];
+    }
+
+    static getInstance(): EstoqueRepository{
+        if(!EstoqueRepository.instance){
+            EstoqueRepository.instance = new EstoqueRepository();
+        }
+        return EstoqueRepository.instance;
+    }
+
     proximoId = 1;
 
     salvar(livro_id: string): Estoque {
