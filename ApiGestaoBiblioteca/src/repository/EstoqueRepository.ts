@@ -65,6 +65,15 @@ export class EstoqueRepository{
         return exemplares;
     }
 
+    buscarPorId(id: number): Estoque {
+        for (let i = 0; i < this.estoque.length; i++) {
+            if (this.estoque[i].id === id) {
+                return this.estoque[i];
+            }
+        }
+        throw new Error(`Exemplar com ID '${id}' não encontrado.`);
+    }
+
     remover(id: number): boolean{
         for (let i: number = 0; i < this.estoque.length; i++) {
             if (this.estoque[i].id === id) {
@@ -73,5 +82,14 @@ export class EstoqueRepository{
             }
         }
         return false;
+    }
+    atualizarPorId(id: number, estoqueAtualizado: Estoque): Estoque {
+        for (let i = 0; i < this.estoque.length; i++) {
+            if (this.estoque[i].id === id) {
+                this.estoque[i] = estoqueAtualizado;
+                return this.estoque[i];
+            }
+        }
+        throw new Error(`Exemplar com ID '${id}' não encontrado para atualização.`);
     }
 }

@@ -6,36 +6,44 @@ import { EstoqueRepository } from "../repository/EstoqueRepository";
 export class EmprestimoService{
     repositorioEmprestimo = new EmprestimoRepository();
     repositorioUsuario = UsuarioRepository.getInstance();
-    repositorioEstoque = new EstoqueRepository();
+    repositorioEstoque = EstoqueRepository.getInstance();
 
     listar(): Emprestimo[] {
         return this.repositorioEmprestimo.listar();
     }
 
-    cadastrar(emprestimo: Omit<Emprestimo, 'id' | 'data_devolucao' | 'data_entrega' | 'dias_atraso' | 'suspensao_ate'>): { sucesso: boolean; mensagem: string; emprestimo?: Emprestimo } {
+    cadastrar(emprestimo: Emprestimo): { sucesso: boolean; mensagem: string; emprestimo?: Emprestimo } {
         const usuario = this.repositorioUsuario.buscarId(emprestimo.usuario_id);
-        if (usuario == null || usuario.status !== 'ativo') {
+        if (!usuario || usuario.status !== 'ativo') {
             return { sucesso: false, mensagem: 'Usuário inválido ou inativo' };
         }
+
         const estoque = this.repositorioEstoque.buscarPorId(emprestimo.estoque_id);
-        if (estoque == null || estoque.disponivel == false) {
+            if (!estoque || estoque.disponivel === false) {
             return { sucesso: false, mensagem: 'Exemplar indisponível' };
         }
-        const dataEmp = new Date();
-        const novoEmprestimo: Omit<Emprestimo, 'id'> = {
+
+        estoque.emprestar();
+        this.repositorioEstoque.atualizarPorId(estoque.id, estoque);
+
+        const novoEmprestimo: Emprestimo = {
+            id: 0,
             usuario_id: emprestimo.usuario_id,
             estoque_id: emprestimo.estoque_id,
-            data_emprestimo: dataEmp,
+            data_emprestimo: new Date(),
             data_devolucao: null,
             data_entrega: null,
             dias_atraso: 0,
             suspensao_ate: null
         };
-        estoque.disponivel = false;
-        estoque.quantidade_emprestada += 1;
-        this.repositorioEstoque.atualizar(estoque.id, estoque);
+
         const emprestimoSalvo = this.repositorioEmprestimo.salvar(novoEmprestimo);
-        return { sucesso: true, mensagem: 'Empréstimo registrado', emprestimo: emprestimoSalvo };
+
+        return {
+            sucesso: true,
+            mensagem: 'Empréstimo registrado',
+            emprestimo: emprestimoSalvo
+        };
     }
 
     devolverId(id: number): { sucesso: boolean; mensagem: string; emprestimo?: Emprestimo } {
@@ -53,9 +61,8 @@ export class EmprestimoService{
  
         const estoque = this.repositorioEstoque.buscarPorId(emprestimo.estoque_id);
         if (estoque) {
-            estoque.disponivel = true;
-            estoque.quantidade_emprestada -= 1;
-            this.repositorioEstoque.atualizar(estoque.id, estoque);
+            estoque.devolver();
+            this.repositorioEstoque.atualizarPorId(estoque.id, estoque);
         }
 
         this.repositorioEmprestimo.atualizar(emprestimo.id, emprestimo);
