@@ -1,9 +1,13 @@
 import { Estoque } from "../model/Estoque";
+import { Livro } from "../model/Livro";
+import { LivroRepository } from "./LivroRepository";
 
 export class EstoqueRepository{
     private static instance: EstoqueRepository;
 
     private estoque:Estoque[] = [];
+
+    private livroRepository = LivroRepository.getInstance();
 
     private constructor(){
         this.estoque = [];
@@ -16,77 +20,49 @@ export class EstoqueRepository{
         return EstoqueRepository.instance;
     }
 
-    proximoId = 1;
+    
 
-    salvar(livro_id: string): Estoque {
-        const novoEstoque = new Estoque(this.proximoId, livro_id);
+    salvar(id: number, livro_id: string): Estoque {
+        const novoEstoque = new Estoque(id, livro_id);
         this.estoque.push(novoEstoque);
-        this.proximoId++;
         return novoEstoque;
     }
 
     listar(): Estoque[]{
-        return this.estoque;
-    }
-
-    atualizar(id: number, novosDados: Partial<Omit<Estoque, 'id'>>): boolean {
-        for (let i = 0; i < this.estoque.length; i++) {
-            if (this.estoque[i].id === id) {
-                const estoqueAtual = this.estoque[i];
-                if (novosDados.livro_id !== undefined) {
-                    estoqueAtual.livro_id = novosDados.livro_id;
-                }
-                if (novosDados.quantidade !== undefined) {
-                    estoqueAtual.quantidade = novosDados.quantidade;
-                }
-                if (novosDados.quantidade_emprestada !== undefined) {
-                    estoqueAtual.quantidade_emprestada = novosDados.quantidade_emprestada;
-                }
-                if (novosDados.disponivel !== undefined) {
-                    estoqueAtual.disponivel = novosDados.disponivel;
-                }
-                return true;
+        let estoqueDisponibilidade: Estoque [] = [];
+        for(let i: number = 0; i < this.estoque.length; i++){
+            if(this.estoque[i].disponivel === true){
+                estoqueDisponibilidade.push(this.estoque[i]);
             }
         }
-        return false;
+        return estoqueDisponibilidade;
     }
 
-    buscarCodigo(id: number): Estoque {
+    buscarCodigo(livro_id: string): Livro {
+        let noEstoque: boolean = false;
         for (let i: number = 0; i < this.estoque.length; i++) {
-            if (this.estoque[i].id === id) {
-                return this.estoque[i];
+            if (this.estoque[i].livro_id === livro_id) {
+                noEstoque = true;
             }
         }
-        throw new Error(`Estoque com ID ${id} não encontrado.`);
+        if(noEstoque === false){
+            throw new Error(`Exemplar com o ISBN '${livro_id}' não encontrado.`);
+        }
+        return this.livroRepository.buscarIsbn(livro_id);
     }
 
-    buscarPorId(id: number): Estoque {
-        for (let i = 0; i < this.estoque.length; i++) {
-            if (this.estoque[i].id === id) {
-                return this.estoque[i];
+    atualizar(livro_id: string, disponibilidade: boolean): Estoque[] {
+        let exemplares: Estoque [] = [];
+        for(let i: number = 0; i < this.estoque.length; i++){
+            if(this.estoque[i].livro_id === livro_id){
+                this.estoque[i].disponivel = disponibilidade;
+                exemplares.push(this.estoque[i]);
             }
         }
-        throw new Error(`Estoque com ID ${id} não encontrado. Verifique e tente novamente.`);
-    }
-
-    atualizarCodigo(id: number, estoque: Partial<Omit<Estoque, 'id'>>): boolean{
-        const estoqueExistente = this.buscarCodigo(id);
-        if (estoqueExistente === undefined) {
-            return false;
+        if(exemplares.length === 0){
+            throw new Error(`Nenhum exemplar com o ISBN '${livro_id}' encontrado. Verifique, e tente novamente.`);
         }
-        if (estoque.livro_id !== undefined) {
-            estoqueExistente.livro_id = estoque.livro_id;
-        }
-        if (estoque.quantidade !== undefined) {
-            estoqueExistente.quantidade = estoque.quantidade;
-        }
-        if (estoque.quantidade_emprestada !== undefined) {
-            estoqueExistente.quantidade_emprestada = estoque.quantidade_emprestada;
-        }
-        if (estoque.disponivel !== undefined) {
-            estoqueExistente.disponivel = estoque.disponivel;
-        }
-        return true;
+        return exemplares;
     }
 
     remover(id: number): boolean{
