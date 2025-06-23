@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 })
 
 router.get('/:isbn', (req, res) => {
-    livroController.buscar(req, res);
+    livroController.buscarPorIsbn(req, res);
 });
 
 router.put('/:isbn', (req, res) => {
