@@ -7,6 +7,15 @@ export class EstoqueService{
     repositorioEstoque = EstoqueRepository.getInstance();
     repositorioLivro = LivroRepository.getInstance();
 
+    private static instance: EstoqueService;
+
+    static getInstance(): EstoqueService{
+        if(!EstoqueService.instance){
+            EstoqueService.instance = new EstoqueService();
+        }
+        return EstoqueService.instance;
+    }
+
     cadastrarEstoque(id: number, livro_id: string): { sucesso: boolean, mensagem: string, estoque?: Estoque } {
         try {
             const estoque = this.repositorioEstoque.salvar(id, livro_id);

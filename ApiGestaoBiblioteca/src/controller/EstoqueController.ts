@@ -1,6 +1,5 @@
 import { Request } from "express";
 import { Response } from "express";
-import { NextFunction } from "express";
 import { EstoqueService } from "../service/EstoqueService";
 import { Estoque } from "../model/Estoque";
 
