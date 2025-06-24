@@ -1,4 +1,5 @@
 import { UsuarioRepository } from "../repository/UsuarioRepository";
+import { EmprestimoService } from "../service/EmprestimoService";
 
 export class Emprestimo {
   id: number;
@@ -17,7 +18,7 @@ export class Emprestimo {
     this.data_emprestimo = new Date;
     this.data_devolucao = calcularDevolucao(this.data_emprestimo, usuario_id);
     this.data_entrega = null;
-    this.dias_atraso = calcularAtraso(this.data_emprestimo, this.data_devolucao);
+    this.dias_atraso = calcularDiasAtraso(this.data_emprestimo, this.data_devolucao);
     this.suspensao_ate = null;
   }
 

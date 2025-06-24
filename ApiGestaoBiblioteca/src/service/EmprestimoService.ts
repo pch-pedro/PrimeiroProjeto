@@ -8,6 +8,15 @@ export class EmprestimoService{
     repositorioUsuario = UsuarioRepository.getInstance();
     repositorioEstoque = EstoqueRepository.getInstance();
 
+    private static instance: EmprestimoService;
+
+    static getInstance(): EmprestimoService{
+        if(!EmprestimoService.instance){
+            EmprestimoService.instance = new EmprestimoService();
+        }
+        return EmprestimoService.instance;
+    }
+
     listar(): Emprestimo[] {
         return this.repositorioEmprestimo.listar();
     }
