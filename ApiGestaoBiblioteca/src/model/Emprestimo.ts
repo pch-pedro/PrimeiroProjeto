@@ -1,6 +1,8 @@
+import { UsuarioRepository } from "../repository/UsuarioRepository";
+
 export class Emprestimo {
   id: number;
-  usuario_id: number;
+  usuario_id: string;
   estoque_id: number;
   data_emprestimo: Date;
   data_devolucao: Date | null;
@@ -8,14 +10,20 @@ export class Emprestimo {
   dias_atraso: number;
   suspensao_ate: Date | null;
 
-  constructor(id: number, usuario_id: number, estoque_id: number, data_emprestimo: Date, data_devolucao: Date | null = null, data_entrega: Date | null = null, dias_atraso: number = 0, suspensao_ate: Date | null = null){
-    this.id = id;
+  constructor(usuario_id: string, estoque_id: number){
+    this.id = this.criarId();
     this.usuario_id = usuario_id;
     this.estoque_id = estoque_id;
-    this.data_emprestimo = data_emprestimo;
-    this.data_devolucao = data_devolucao;
-    this.data_entrega = data_entrega;
-    this.dias_atraso = dias_atraso;
-    this.suspensao_ate = suspensao_ate;
+    this.data_emprestimo = new Date;
+    this.data_devolucao = calcularDevolucao(this.data_emprestimo, usuario_id);
+    this.data_entrega = null;
+    this.dias_atraso = calcularAtraso(this.data_emprestimo, this.data_devolucao);
+    this.suspensao_ate = null;
+  }
+
+  static repositorioUsuario = UsuarioRepository.getInstance();
+  
+  criarId(){
+    return Date.now();
   }
 }
