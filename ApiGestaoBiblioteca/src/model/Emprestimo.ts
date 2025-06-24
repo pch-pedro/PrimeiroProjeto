@@ -16,9 +16,9 @@ export class Emprestimo {
     this.usuario_id = usuario_id;
     this.estoque_id = estoque_id;
     this.data_emprestimo = new Date;
-    this.data_devolucao = calcularDevolucao(this.data_emprestimo, usuario_id);
+    this.data_devolucao = this.calcularDevolucao(this.data_emprestimo, usuario_id);
     this.data_entrega = null;
-    this.dias_atraso = calcularDiasAtraso(this.data_emprestimo, this.data_devolucao);
+    this.dias_atraso = 0;
     this.suspensao_ate = null;
   }
 
@@ -26,5 +26,19 @@ export class Emprestimo {
   
   criarId(){
     return Date.now();
+  }
+
+  calcularDevolucao(data: Date, usuario_id: string): Date {
+    let prazoDias: number;
+    const usuario = Emprestimo.repositorioUsuario.buscarCpf(usuario_id);
+    const categoria = usuario.categoriaId.nome.toLowerCase();
+    if (categoria === "professor") {
+      prazoDias = 40;
+    } else {
+      prazoDias = 15;
+    }
+    const dataDevolucao = new Date(data);
+    dataDevolucao.setDate(dataDevolucao.getDate() + prazoDias);
+    return dataDevolucao;
   }
 }
