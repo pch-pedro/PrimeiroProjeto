@@ -17,3 +17,5 @@ mysqlConnection.connect((err) => {
     }
     console.log('Conexao bem-sucedida com o banco de dados MySQL');
 });
+
+//Esse código serve para enviarmos uma requisição para esse endereço com esses dados
