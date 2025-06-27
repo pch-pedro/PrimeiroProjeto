@@ -21,8 +21,8 @@ export class EmprestimoService{
         return this.repositorioEmprestimo.listar();
     }
 
-    cadastrar(dados: { usuario_id: number, estoque_id: number }): { sucesso: boolean; mensagem: string; emprestimo?: Emprestimo } {
-        const usuario = this.repositorioUsuario.buscarId(dados.usuario_id);
+    cadastrar(dados: { usuario_id: string, estoque_id: number }): { sucesso: boolean; mensagem: string; emprestimo?: Emprestimo } {
+        const usuario = this.repositorioUsuario.buscarCpf(dados.usuario_id);
         if (!usuario || usuario.status !== 'ativo') {
             return { sucesso: false, mensagem: 'Usuário inválido ou inativo' };
         }

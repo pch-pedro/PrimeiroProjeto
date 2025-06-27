@@ -4,6 +4,11 @@ import livroRoutes from './routes/livro.routes';
 import estoqueRoutes   from './routes/estoque.routes';
 import emprestimoRoutes from './routes/emprestimo.routes';
 import { UsuarioController } from './controller/UsuarioController';
+import { ProductRepository } from './repository/productRepository';
+
+const repository: ProductRepository = new ProductRepository();
+
+repository.createTable();
 
 const app = express();
 const PORT = process.env.PORT ?? 3090;
