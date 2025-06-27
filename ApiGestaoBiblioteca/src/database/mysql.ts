@@ -19,3 +19,14 @@ mysqlConnection.connect((err) => {
 });
 
 //Esse código serve para enviarmos uma requisição para esse endereço com esses dados
+
+
+export function executarComandoSQL(query: string, valores: any[], callback: (err: any, result: any) => void){
+    mysqlConnection.query(query, valores, (err, resultado: any) => {
+        if(err){
+            console.log('Erro ao executar a query', err);
+            throw err;
+        }
+        return callback(err,resultado);
+    });
+}
