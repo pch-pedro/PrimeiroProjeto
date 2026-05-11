@@ -19,6 +19,7 @@ app.use('/library/livros', livroRoutes);
 app.use('/library/estoque', estoqueRoutes);
 app.use('/library/emprestimos', emprestimoRoutes);
 
-//Teste gitAdd
+
+
 
 app.listen(PORT, () => console.log(`API em execução no URL: http://localhost:${PORT}`));
